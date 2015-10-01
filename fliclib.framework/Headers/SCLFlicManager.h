@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "SCLFlicButton.h"
-#import <sqlite3.h>
 
 /*!
  *  @enum SCLFlicManagerBluetoothState
@@ -53,13 +52,12 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *  @class SCLFlicManager
  *
  *  @discussion     An instance of this class is required in order to perform any bluetooth LE communication with
- *                  the flic. You need to use this in order to scan for, and discover, new buttons. The object will
- *                  keep track of all the flics that are associated to the specific iOS device. It is important to
- *                  mention that the SCLFlicManager does not support the regular state preservation and restoration protocol
- *                  for view controllers, meaning that it does not support NSCoding. Instead, all of the state preservation
- *                  will be taken cared of for you by the manager. Simply reinstantiate it using the 
- *                  <code>initWithDelegate:appID:appSecret:andRestoreState:</code> method and collect the associated
- *                  flic objects using the <code>knownButtons:</code> method.
+ *                  the flic. The object will keep track of all the flics that are associated to the specific iOS device.
+ *                  It is important to mention that the SCLFlicManager does not support the regular state preservation
+ *                  and restoration protocol for view controllers, meaning that it does not support NSCoding.
+ *                  Instead, all of the state preservation will be taken cared of for you by the manager.
+ *                  Simply reinstantiate it using the <code>initWithDelegate:appID:appSecret:andRestoreState:</code> method
+ *                  and collect the associated flic objects using the <code>knownButtons:</code> method.
  *
  */
 @interface SCLFlicManager : NSObject {
@@ -73,7 +71,7 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *                  SCLFlicManagerDelegate to see what callbacks are available.
  *
  */
-@property(weak, nonatomic) id<SCLFlicManagerDelegate> delegate;
+@property(weak, nonatomic, nullable) id<SCLFlicManagerDelegate> delegate;
 
 /*!
  *  @property bluetoothState
@@ -96,7 +94,7 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
 @property (readonly, getter=isEnabled) BOOL enabled;
 
 /*!
- *  @method initWithDelegate:appID:appSecret:andRestoreState:
+ *  @method initWithDelegate:appID:appSecret:backgroundExecution:andRestoreState:
  *
  *  @discussion     The initialization call to use when you want to create a manager. This will initiate a SCLFlicManager and do the proper
  *                  preparation needed in order to start the bluetooth communication with flic buttons. The BOOL <code>restore</code> included
@@ -114,35 +112,36 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *  @param delegate     The delegate that all callbacks will be sent to.
  *  @param appID        This is the App-ID string that the developer is required to have in order to use the fliclib framework.
  *  @param appSecret    This is the App-Secret string that the developer is required to have in order to use the fliclib framework.
+ *  @param bExecution   Flag that specifies if want to configure the Flic manager to support background execution. If YES, then you also
+ *                      have to check the "Uses Bluetooth LE accessories" option under your projects Background Modes settings.
  *  @param restore      Whether you want to create a brand new manager (and thus clearing any old manager) or restore the manager to a
  *                      previous state.
  *
  */
-- (instancetype) initWithDelegate:(id<SCLFlicManagerDelegate>) delegate appID: (NSString *) appID appSecret: (NSString *) appSecret andRestoreState:(BOOL) restore;
+- (instancetype _Nullable) initWithDelegate:(id<SCLFlicManagerDelegate> _Nonnull) delegate appID: (NSString * _Nonnull) appID appSecret: (NSString * _Nonnull) appSecret backgroundExecution: (BOOL) bExecution andRestoreState:(BOOL) restore;
 
 /*!
  *  @method knownButtons:
  *
- *  @discussion     All buttons that have ever been discovered by the manager and not manually been forgotten/removed.
+ *  @discussion     All buttons that have ever been added to the manager and not manually been forgotten/removed.
  *
  *  @return         Dictionary containing the SCLFlicButton objects. The keys are of NSUUID type that represent the buttonIdentifier
  *                  of the SCLFlicButton instance.
  *
  */
-- (NSDictionary*) knownButtons;
+- (NSDictionary* _Nonnull) knownButtons;
 
 /*!
  *  @method forgetButton:
  *
  *  @discussion     This will attempt to completely remove the flic button from the manager and clear the SCLFlicButton instance. If the flic
  *                  is connected when this method is called then it will also be disconnected first. Remember to clear all your references
- *                  to this particular button instance so that it properly gets cleared from memory. Only after doing this will you be able
- *                  to discover the flic again when doing a new scan.
+ *                  to this particular button instance so that it properly gets cleared from memory.
  *
  *  @param button   The button that you wish to destroy.
  *
  */
-- (void) forgetButton:(SCLFlicButton *) button;
+- (void) forgetButton:(SCLFlicButton * _Nonnull) button;
 
 /*!
  *  @method disable
@@ -172,7 +171,7 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *  @param callback     This is the callback URL that you want the Flic app to return the data to.
  *
  */
-- (void) requestButtonFromFlicAppWithCallback: (NSString *) callback;
+- (void) requestButtonFromFlicAppWithCallback: (NSString * _Nonnull) callback;
 
 /*!
  *  @method generateButtonFromURL:
@@ -182,7 +181,7 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *  @param url      This is the full url that was returned from the Flic app. 
  *
  */
-- (SCLFlicButton *) generateButtonFromURL: (NSURL *) url;
+- (SCLFlicButton * _Nullable) generateButtonFromURL: (NSURL * _Nonnull) url;
 
 @end
 
@@ -215,7 +214,7 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *                      pending again.
  *
  */
-- (void) flicManager:(SCLFlicManager *)manager didChangeBluetoothState: (SCLFlicManagerBluetoothState) state;
+- (void) flicManager:(SCLFlicManager * _Nonnull) manager didChangeBluetoothState: (SCLFlicManagerBluetoothState) state;
 
 /*!
  *  @method flicManagerDidRestoreState:
@@ -228,7 +227,7 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *                      order to properly restore the rest of your application. Do not forget to re-set the delegate on all buttons.
  *
  */
-- (void) flicManagerDidRestoreState:(SCLFlicManager *)manager;
+- (void) flicManagerDidRestoreState:(SCLFlicManager * _Nonnull) manager;
 
 /*!
  *  @method flicManager:didForgetButton:error:
@@ -241,7 +240,7 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *                      to also remove your references in case you still have any.
  *
  */
-- (void) flicManager:(SCLFlicManager *)manager didForgetButton:(NSUUID *)buttonIdentifier error:(NSError *)error;
+- (void) flicManager:(SCLFlicManager * _Nonnull) manager didForgetButton:(NSUUID * _Nonnull) buttonIdentifier error:(NSError * _Nullable)error;
 
 
 @end

@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
-#import <sqlite3.h>
 
 /*!
  *  @enum SCLFlicButtonConnectionState
@@ -75,8 +74,6 @@ typedef NS_ENUM(NSInteger, SCLFlicButtonMode) {
      * has been made. This is the most energy conservative mode, but may have a negative effect on response time. This is the recommended mode
      * for all applications where latency is not an issue.
      *
-     * While in this mode you will not get any button disconnect/connect events since all that will be handled internally.
-     * Update: You will now get these events! It might be removed at a later point, to be decided.
      */
     SCLFlicButtonModePassive = 3,
 };
@@ -241,7 +238,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @discussion The delegate object that will receive events related to this particular flic.
  *
  */
-@property(weak, nonatomic) id<SCLFlicButtonDelegate> delegate;
+@property(weak, nonatomic, nullable) id<SCLFlicButtonDelegate> delegate;
 
 /*!
  *  @property buttonIdentifier
@@ -249,7 +246,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @discussion The virtual ID of the flic.
  *
  */
-@property (readonly, nonatomic, strong) NSUUID *buttonIdentifier;
+@property (readonly, nonatomic, strong, nonnull) NSUUID *buttonIdentifier;
 
 /*!
  *  @property buttonPublicKey
@@ -257,7 +254,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @discussion The public key of the flic. This in the key that is used to identify the flic on our backend.
  *
  */
-@property (readonly, nonatomic, strong) NSString *buttonPublicKey;
+@property (readonly, nonatomic, strong, nonnull) NSString *buttonPublicKey;
 
 /*!
  *  @property name
@@ -265,7 +262,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @discussion The Bluetooth device name of the flic button.
  *
  */
-@property (atomic, readonly, strong) NSString *name;
+@property (atomic, readonly, strong, nonnull) NSString *name;
 
 
 /*!
@@ -329,6 +326,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @method indicateLED:
  *
  *  @discussion     Use this method when you want to indicate something to the user by fading the LED. Be mindful with battery usage.
+ *                  This will only work if the Flic is connected.
  *
  *  @param count    Decides how many times the LED will indicate (fade)
  */
@@ -366,7 +364,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @protocol SCLFlicButtonDelegate
  *
  *  @discussion         The delegate of a SCLFlicButton object must adopt the <code>SCLFlicButtonDelegate</code> protocol. There are not
- *                      any required delegate methods, but all are recommended for proper use of the flic.
+ *                      any required delegate methods, but all are recommended for proper use of the Flic.
  *
  */
 @protocol SCLFlicButtonDelegate <NSObject>
@@ -388,7 +386,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @discussion         The flic registered a button down event.
  *
  */
-- (void) flicButton:(SCLFlicButton *) button didReceiveButtonDown:(BOOL) queued age: (NSInteger) age;
+- (void) flicButton:(SCLFlicButton * _Nonnull) button didReceiveButtonDown:(BOOL) queued age: (NSInteger) age;
 
 /*!
  *  @method flicButton:didReceiveButtonUp:age:
@@ -403,7 +401,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @discussion         The flic registered a button up event.
  *
  */
-- (void) flicButton:(SCLFlicButton *) button didReceiveButtonUp:(BOOL) queued age: (NSInteger) age;
+- (void) flicButton:(SCLFlicButton * _Nonnull) button didReceiveButtonUp:(BOOL) queued age: (NSInteger) age;
 
 /*!
  *  @method flicButton:didReceiveButtonClick:age:
@@ -419,7 +417,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *                      The behavior of this event depends on what SCLFlicButtonTriggerBehavior the triggerBehavior property is set to.
  *
  */
-- (void) flicButton:(SCLFlicButton *) button didReceiveButtonClick:(BOOL) queued age: (NSInteger) age;
+- (void) flicButton:(SCLFlicButton * _Nonnull) button didReceiveButtonClick:(BOOL) queued age: (NSInteger) age;
 
 /*!
  *  @method flicButton:didReceiveButtonDoubleClick:age:
@@ -435,7 +433,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *                      The behavior of this event depends on what SCLFlicButtonTriggerBehavior the triggerBehavior property is set to.
  *
  */
-- (void) flicButton:(SCLFlicButton *) button didReceiveButtonDoubleClick:(BOOL) queued age: (NSInteger) age;
+- (void) flicButton:(SCLFlicButton * _Nonnull) button didReceiveButtonDoubleClick:(BOOL) queued age: (NSInteger) age;
 
 /*!
  *  @method flicButton:didReceiveButtonHold:age:
@@ -451,7 +449,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *                      The behavior of this event depends on what SCLFlicButtonTriggerBehavior the triggerBehavior property is set to.
  *
  */
-- (void) flicButton:(SCLFlicButton *) button didReceiveButtonHold:(BOOL) queued age: (NSInteger) age;
+- (void) flicButton:(SCLFlicButton * _Nonnull) button didReceiveButtonHold:(BOOL) queued age: (NSInteger) age;
 
 /*!
  *  @method flicButtonDidConnect:
@@ -464,7 +462,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *                      after the <code>flicButtonIsReady:</code> callback has arrived.
  *
  */
-- (void) flicButtonDidConnect:(SCLFlicButton *)button;
+- (void) flicButtonDidConnect:(SCLFlicButton * _Nonnull) button;
 
 /*!
  *  @method flicButtonIsReady:
@@ -473,12 +471,10 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *
  *  @discussion         This delegate method is called every time the flic has sucessfully connected and the autheticity has been verified.
  *                      You will not receive any press events from the flic before this callback has been sent. Typically this event will be sent
- *                      immediately after the <code>flicButtonDidConnect:</code> event. The verification process will take longer time the very
- *                      first time that the flic is connected to the particular iOS device since a round-trip to the backend server has to
- *                      be completed. This also means that an active internet connection is needed during the first connect of the flic.
+ *                      immediately after the <code>flicButtonDidConnect:</code> event.
  *
  */
-- (void) flicButtonIsReady:(SCLFlicButton *)button;
+- (void) flicButtonIsReady:(SCLFlicButton * _Nonnull) button;
 
 /*!
  *  @method flicButton:didDisconnectWithError:
@@ -490,7 +486,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *                      This can sometimes be called during a connection event that failed before the user was notified of the connection.
  *
  */
-- (void) flicButton:(SCLFlicButton *) button didDisconnectWithError:(NSError *)error;
+- (void) flicButton:(SCLFlicButton * _Nonnull) button didDisconnectWithError:(NSError * _Nullable) error;
 
 /*!
  *  @method flicButton:didFailToConnectWithError:
@@ -505,7 +501,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *                      need to call the <code>connect:</code> yourself to activate the pending connection once again.
  *
  */
-- (void) flicButton:(SCLFlicButton *)button didFailToConnectWithError:(NSError *)error;
+- (void) flicButton:(SCLFlicButton * _Nonnull) button didFailToConnectWithError:(NSError * _Nullable) error;
 
 /*!
  *  @method flicButton:didUpdateRSSI:error:
@@ -518,6 +514,6 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @discussion         This callback verifies (unless an error occurred) that the RSSI value was updated.
  *
  */
-- (void) flicButton:(SCLFlicButton *)button didUpdateRSSI:(NSNumber *) RSSI error:(NSError *)error;
+- (void) flicButton:(SCLFlicButton * _Nonnull) button didUpdateRSSI:(NSNumber * _Nonnull) RSSI error:(NSError * _Nullable) error;
 
 @end
