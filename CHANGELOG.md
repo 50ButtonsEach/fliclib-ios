@@ -1,3 +1,11 @@
+#fliclib-ios 0.7.1
+
+**Changes**
+
+* Stability improvements.
+* Passive mode removed, use ActiveKeepAlive for those use-cases instead.
+* Updated Documentation.
+
 #fliclib-ios 0.6.7
 
 **Changes**

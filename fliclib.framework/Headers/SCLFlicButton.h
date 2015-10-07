@@ -59,8 +59,8 @@ typedef NS_ENUM(NSInteger, SCLFlicButtonMode) {
      * This mode is very similar to Active mode with the difference that the connection will re-establish whenever flic is brought back within
      * range of the iOS device after being away for a longer period of time. This will be the case on all scenarios except when the button has
      * been manually disconnected using the <code>disconnect</code> method. This mode is particularily useful when you want to have a seamless
-     * persistent user experience with lower latency than on the passive mode (described below). This mode will unfortunately consume more energy
-     * since it requires that flic advertises during longer periods of time. Keep this in mind when developing your app.
+     * persistent user experience with reasonably low latency. This mode will unfortunately consume more energy since it requires that flic
+     * advertises during longer periods of time. Keep this in mind when developing your app.
      */
     SCLFlicButtonModeActiveKeepAlive = 1,
     /**
@@ -69,13 +69,6 @@ typedef NS_ENUM(NSInteger, SCLFlicButtonMode) {
      * any other mode so use with caution.
      */
     SCLFlicButtonModeSuperActive = 2,
-    /**
-     * Flic will be in a passive state for most of the time. It will only connect to the iOS device and send data whenever a button press
-     * has been made. This is the most energy conservative mode, but may have a negative effect on response time. This is the recommended mode
-     * for all applications where latency is not an issue.
-     *
-     */
-    SCLFlicButtonModePassive = 3,
 };
 
 /*!
@@ -307,8 +300,8 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
 /*!
  *  @method connect:
  *
- *  @discussion		Attempts to connect the flic. If the flic is not available, due to either being out of range or being in passive
- *                  mode, then the flic will be connected once it becomes available since this call will not time out, also called a
+ *  @discussion		Attempts to connect the flic. If the flic is not available, due to either being out of range or not advertising,
+ *                  then the flic will be connected once it becomes available since this call will not time out, also called a
  *                  pending connection. It can be canceled by calling the <code>disconnect</code> method.
  *
  */
@@ -336,12 +329,12 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @method setMode:
  *
  *  @discussion         This method is the method to call when you wish to switch between the different available modes for the flic.
- *                      If the flic is not available, meaning that it is not connected to the iOS device, due to either being in a passive
- *                      mode or out of proximity then the mode will not change instantly. The mode will instead change once the flic becomes
+ *                      If the flic is not available, meaning that it is not connected to the iOS device, due to either being manually disconnected
+ *                      or being out of proximity, then the mode will not change instantly. The mode will instead change once the flic becomes
  *                      available the next time and only then will the mode property be updated accordingly. However, if you change the mode
  *                      while the flic is disconnected and not having a pending connection to it, then you need to actively call the
- *                      <code>connect:</code> method in order for it to connect. This is unless you are using a <i>KeepAlive</i> or <i>Passive</i>
- *                      mode, in which case a <code>connect</code> will be sent automatically.
+ *                      <code>connect:</code> method in order for it to connect. This is unless you are using the <i>KeepAlive</i> mode,
+ *                      in which case a <code>connect</code> will be sent automatically.
  *
  *  @param mode         The mode that you wish to switch to.
  *
@@ -378,8 +371,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *
  *  @param button       The SCLFlicButton object that the event came from.
  *  @param queued       This lets you know if the event is a queued event that happened before the flic connected or if it is a real time
- *                      event. Keep in mind that this parameter will most likely be <code>YES</code> if the flic is in passive mode since
- *                      the flic will in that mode connect and disconnect on every button press.
+ *                      event.
  *  @param age          The age of the trigger event in seconds. This is particularily important when receiving events that might have been
  *                      queued up on flic while it was out of range. The units is in seconds and will be rounded to the nearest second.
  *
@@ -393,8 +385,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *
  *  @param button       The SCLFlicButton object that the event came from.
  *  @param queued       This lets you know if the event is a queued event that happened before the flic connected or if it is a real time
- *                      event. Keep in mind that this parameter will most likely be <code>YES</code> if the flic is in passive mode since
- *                      the flic will in that mode connect and disconnect on every button press.
+ *                      event.
  *  @param age          The age of the trigger event in seconds. This is particularily important when receiving events that might have been
  *                      queued up on flic while it was out of range. The units is in seconds and will be rounded to the nearest second.
  *
@@ -408,8 +399,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *
  *  @param button       The SCLFlicButton object that the event came from.
  *  @param queued       This lets you know if the event is a queued event that happened before the flic connected or if it is a real time
- *                      event. Keep in mind that this parameter will most likely be <code>YES</code> if the flic is in passive mode since
- *                      the flic will in that mode connect and disconnect on every button press.
+ *                      event.
  *  @param age          The age of the trigger event in seconds. This is particularily important when receiving events that might have been
  *                      queued up on flic while it was out of range. The units is in seconds and will be rounded to the nearest second.
  *
@@ -424,8 +414,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *
  *  @param button       The SCLFlicButton object that the event came from.
  *  @param queued       This lets you know if the event is a queued event that happened before the flic connected or if it is a real time
- *                      event. Keep in mind that this parameter will most likely be <code>YES</code> if the flic is in passive mode since
- *                      the flic will in that mode connect and disconnect on every button press.
+ *                      event.
  *  @param age          The age of the trigger event in seconds. This is particularily important when receiving events that might have been
  *                      queued up on flic while it was out of range. The units is in seconds and will be rounded to the nearest second.
  *
@@ -440,8 +429,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *
  *  @param button       The SCLFlicButton object that the event came from.
  *  @param queued       This lets you know if the event is a queued event that happened before the flic connected or if it is a real time
- *                      event. Keep in mind that this parameter will most likely be <code>YES</code> if the flic is in passive mode since
- *                      the flic will in that mode connect and disconnect on every button press.
+ *                      event.
  *  @param age          The age of the trigger event in seconds. This is particularily important when receiving events that might have been
  *                      queued up on flic while it was out of range. The units is in seconds and will be rounded to the nearest second.
  *
@@ -497,7 +485,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @discussion         The requested connection failed. Please note that depending on at what point in the connection process the connection
  *                      failed you might also receive a regular flicButtonDidDisconnect: as well. If the connection fails and this callback is
  *                      made then the flic will always cancel the pending connection, regardless of what mode the flic happens to be in.
- *                      This means that if you get a <code>flicButton:didFailToConnectWithError:</code> event and the flic is in passive mode then you
+ *                      This means that if you get a <code>flicButton:didFailToConnectWithError:</code> event and the flic is in KeepAlive mode then you
  *                      need to call the <code>connect:</code> yourself to activate the pending connection once again.
  *
  */

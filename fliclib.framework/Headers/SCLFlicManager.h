@@ -156,8 +156,8 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *  @method enable
  *
  *  @discussion     This will enable the bluetooth communication after it has previously been disabled. It will not however reconnect any buttons,
- *                  that will have to be handled manually. This is unless you have the flic(s) configured to be in either <i>Passive</i> mode or
- *                  <i>KeepAlive</i> mode, in which case the connect will automatically be sent.
+ *                  that will have to be handled manually. This is unless you have the flic(s) configured to be in <i>KeepAlive</i> mode, 
+ *                  in which case the connect will automatically be sent.
  *
  */
 - (void) enable;
@@ -189,9 +189,8 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
 /*!
  *  @protocol SCLFlicManagerDelegate
  *
- *  @discussion     The delegate of a SCLFlicManager instance must adopt the <code>SCLFlicManagerDelegate</code> protocol. There is one
- *                  required delegate methods, flicManager:DidDiscoverButton:withRSSI: and flicManagerDidChangeBluetoothState, and two
- *                  optional flicManagerDidRestoreState (highly recommended) and flicManager:didForgetButton:error.
+ *  @discussion     The delegate of a SCLFlicManager instance must adopt the <code>SCLFlicManagerDelegate</code> protocol. There are no
+ *                  required delegate methods, but flicManagerDidChangeBluetoothState is highly recommended.
  *
  */
 @protocol SCLFlicManagerDelegate <NSObject>
