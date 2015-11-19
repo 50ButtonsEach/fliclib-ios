@@ -209,6 +209,18 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
      * For some reason the button was disconnected before the verification sequense had time to complete.
      */
     SCLFlicErrorButtonDisconnectedDuringVerification,
+    /**
+     * The request did not contain enough data to be completed.
+     */
+    SCLFlicErrorMissingData,
+    /**
+     * The signature over the data is not valid. The data might be corrupt.
+     */
+    SCLFlicErrorInvalidSignature,
+    /**
+     * You are trying to grab a button that you have already grabbed before.
+     */
+    SCLFlicErrorButtonAlreadyGrabbed,
 };
 
 @protocol SCLFlicButtonDelegate;
@@ -296,6 +308,14 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *
  */
 @property (nonatomic, readonly) int pressCount;
+
+/*!
+ *  @property isReady
+ *
+ *  @discussion This property lets you know wether the Flic is ready or not.
+ *
+ */
+@property (readonly) BOOL isReady;
 
 /*!
  *  @method connect:

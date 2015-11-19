@@ -1,3 +1,12 @@
+#fliclib-ios 0.8.2
+
+**Changes**
+
+* Stability improvements.
+* Added error handling to generateButtonFromURL:error:. Possible errors are: SCLFlicErrorButtonAlreadyExisting, SCLFlicErrorMissingData, SCLFlicErrorInvalidSignature, SCLFlicErrorUnknown
+* Added isReady property.
+
+
 #fliclib-ios 0.7.1
 
 **Changes**

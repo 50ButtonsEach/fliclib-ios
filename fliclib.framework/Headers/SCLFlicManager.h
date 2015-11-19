@@ -181,7 +181,7 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *  @param url      This is the full url that was returned from the Flic app. 
  *
  */
-- (SCLFlicButton * _Nullable) generateButtonFromURL: (NSURL * _Nonnull) url;
+- (SCLFlicButton * _Nullable) generateButtonFromURL: (NSURL * _Nonnull) url error: (NSError * _Nullable * _Nullable) error;
 
 @end
 
