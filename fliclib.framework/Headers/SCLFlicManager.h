@@ -129,7 +129,7 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *                  of the SCLFlicButton instance.
  *
  */
-- (NSDictionary* _Nonnull) knownButtons;
+- (NSDictionary<NSUUID *, SCLFlicButton *> * _Nonnull) knownButtons;
 
 /*!
  *  @method forgetButton:
@@ -182,6 +182,17 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *
  */
 - (SCLFlicButton * _Nullable) generateButtonFromURL: (NSURL * _Nonnull) url error: (NSError * _Nullable * _Nullable) error;
+
+
+/*!
+ *  @method refreshPendingConnections:
+ *
+ *  @discussion     This method will go through all pending connections and refresh them. This is needed since we unfortunately can not rely on Apple
+ *                  to take care of that. This method should be called at regular intervals, such the once provided by significant location changes.
+ *                  Please note that this is ONLY needed if you are using SCLFlicModeBackground!
+ *
+ */
+- (void) refreshPendingConnections;
 
 @end
 

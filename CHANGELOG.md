@@ -1,3 +1,14 @@
+#fliclib-ios 0.9.5
+
+**Changes**
+
+* Overall stabilify implovements.
+* Bluetooth rework to improve connectivity.
+* Flilib now has a check to see if Flic app exists before a button is grabbed. If it is not existitng then the user will be forwarded to the App Store. This requires that the developer adds "flic" as an item under LSApplicationQueriesSchemes.
+* SCLFlicButtonMode has been changed. We now only have one foreground mode and one background mode. Please see documentation for more information about that.
+* Bitcode support added.
+* refreshPendingConnections: method added to SCLFlicManager. This method is important when using the background mode for Flic in order to keep the pending connections in a proper state. Please see documentation for more information about that.
+
 #fliclib-ios 0.8.2
 
 **Changes**

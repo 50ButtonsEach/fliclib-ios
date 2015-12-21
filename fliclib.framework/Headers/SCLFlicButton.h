@@ -41,34 +41,23 @@ typedef NS_ENUM(NSInteger, SCLFlicButtonConnectionState) {
  *
  *  @discussion Represents the different modes that a flic can be configured to operate in. It is very important that you choose a mode
  *              that fits your application the best. Always try to choose the mode that consumes the least amount of battery that works
- *              with your application. For more detailed information about these different modes see the general documentation available at
- *              our website.
+ *              with your application.
  *
  */
 typedef NS_ENUM(NSInteger, SCLFlicButtonMode) {
     /**
-     * With Active mode the flic will be in a constant connection to the iOS device whenever a connection has been established. It will always
-     * try to reconnect in case the connection is lost but the advertisement on flic will timeout after a short period of time. If this occurs
-     * then the flic has to be pressed manually in order to start the advertisement again. This timeout is added in order to preserve energy.
-     * If the connection however is canceled using the <code>disconnect</code> method then no pending connection will remain and the advertisement
-     * on flic will not start. It will have a maximum response time of 280ms whenever connected. This is the most energy conservative version of
-     * the different active modes.
+     * This mode will configure the Flic to run with lower latency that might be needed if you are planning on using Flic in a foreground
+     * application. If the application leaves tha foreground then the latency will again be set higher in order to preserve battery.
+     * In this mode you as a developer has the responsibillity to connect the Flic each time you want to use it, unlike in
+     * <i>SCLFlicButtonModeBackground</i>where the Lib will make sure to keep it connected.
      */
-    SCLFlicButtonModeActive = 0,
+    SCLFlicButtonModeForeground = 0,
     /**
-     * This mode is very similar to Active mode with the difference that the connection will re-establish whenever flic is brought back within
-     * range of the iOS device after being away for a longer period of time. This will be the case on all scenarios except when the button has
-     * been manually disconnected using the <code>disconnect</code> method. This mode is particularily useful when you want to have a seamless
-     * persistent user experience with reasonably low latency. This mode will unfortunately consume more energy since it requires that flic
-     * advertises during longer periods of time. Keep this in mind when developing your app.
+     * This mode is prefered when you are developing an application that depends on Flic working in the background. The latency will be higher
+     * than in <i>SCLFlicButtonModeForeground</i> in order to preserve battery. The Lib will make sure that the Flic is connected whenever possible.
+     * Please also read more about the <code>refreshPendingConnections:</code> method on the manager to achieve the best possible connectivity.
      */
-    SCLFlicButtonModeActiveKeepAlive = 1,
-    /**
-     * The SuperActive mode will behave ecactly like the regular Active mode with the exception that it instead has a maximum response time of
-     * 45ms whenever connected. This is good for applications where response time is crucial. The downside is that it consumes more energy than
-     * any other mode so use with caution.
-     */
-    SCLFlicButtonModeSuperActive = 2,
+    SCLFlicButtonModeBackground = 1,
 };
 
 /*!
@@ -351,10 +340,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @discussion         This method is the method to call when you wish to switch between the different available modes for the flic.
  *                      If the flic is not available, meaning that it is not connected to the iOS device, due to either being manually disconnected
  *                      or being out of proximity, then the mode will not change instantly. The mode will instead change once the flic becomes
- *                      available the next time and only then will the mode property be updated accordingly. However, if you change the mode
- *                      while the flic is disconnected and not having a pending connection to it, then you need to actively call the
- *                      <code>connect:</code> method in order for it to connect. This is unless you are using the <i>KeepAlive</i> mode,
- *                      in which case a <code>connect</code> will be sent automatically.
+ *                      available the next time and only then will the mode property be updated accordingly.
  *
  *  @param mode         The mode that you wish to switch to.
  *
@@ -505,7 +491,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @discussion         The requested connection failed. Please note that depending on at what point in the connection process the connection
  *                      failed you might also receive a regular flicButtonDidDisconnect: as well. If the connection fails and this callback is
  *                      made then the flic will always cancel the pending connection, regardless of what mode the flic happens to be in.
- *                      This means that if you get a <code>flicButton:didFailToConnectWithError:</code> event and the flic is in KeepAlive mode then you
+ *                      This means that if you get a <code>flicButton:didFailToConnectWithError:</code> event when the flic is in Background mode then you
  *                      need to call the <code>connect:</code> yourself to activate the pending connection once again.
  *
  */
