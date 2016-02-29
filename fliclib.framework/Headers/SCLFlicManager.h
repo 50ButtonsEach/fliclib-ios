@@ -3,7 +3,7 @@
 //  @framework fliclib
 //
 //  Created by Anton Meier on 2014-06-18.
-//  Copyright (c) 2014 Shortcut Labs. All rights reserved.
+//  Copyright (c) 2016 Shortcut Labs. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

@@ -1,3 +1,16 @@
+#fliclib-ios 1.0.3
+
+**Changes**
+
+* Changes to BLE reconnectien
+* Internal rework
+* Updated error codes
+
+**Issues Fixed**
+
+* Fixed issue that caused connection to fail if you set mode directly before initiating a connection.
+* Fixed issue in outgoing packet signing that caused an invalid signature on packets send if the app was crashed and relaunched in the background during an active Flic connection.
+
 #fliclib-ios 0.9.5
 
 **Changes**

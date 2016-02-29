@@ -3,7 +3,7 @@
 //  @framework fliclib
 //
 //  Created by Anton Meier on 2014-06-18.
-//  Copyright (c) 2015 Shortcut Labs. All rights reserved.
+//  Copyright (c) 2016 Shortcut Labs. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -153,63 +153,111 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
     /**
      * General error code that can be sent to let you know that a started task did not complete.
      */
-    SCLFlicErrorCouldNotCompleteTask,
+    SCLFlicErrorCouldNotCompleteTask = 1,
     /**
-     * If a connection to a flic button failed for unknown reasons. This could for example be if flic is brought out of range during a connection sequense.
+     * If a connection to a button failed for unknown reasons. This could for example be if it is brought out of range during a connection sequense.
      */
-    SCLFlicErrorConnectionFailed,
+    SCLFlicErrorConnectionFailed = 2,
     /**
      * The RSSI value could not be read.
      */
-    SCLFlicErrorCouldNotUpdateRSSI,
+    SCLFlicErrorCouldNotUpdateRSSI = 3,
     /**
      * The internal database that is used in order to keep track of the buttons is not available or can not be accessed.
      */
-    SCLFlicErrorDatabaseError,
+    SCLFlicErrorDatabaseError = 4,
     /**
-     * If the flic button sends unknown data to the iOS device that does not comply with our communication protocol specification.
+     * If the button sends unknown data to the iOS device that does not comply with our communication protocol specification.
      */
-    SCLFlicErrorUnknownDataReceived,
+    SCLFlicErrorUnknownDataReceived = 5,
     /**
      * If for some reason the button does not responde in time during the verification process.
      */
-    SCLFlicErrorVerificationTimeOut,
+    SCLFlicErrorVerificationTimeOut = 6,
     /**
      * The backend that is used for the initial verification sequence can not be reached.
      */
-    SCLFlicErrorBackendUnreachable,
+    SCLFlicErrorBackendUnreachable = 7,
     /**
      * The iOS device does not have an internet connection that is required in order to complete the task.
      */
-    SCLFlicErrorNoInternetConnection,
+    SCLFlicErrorNoInternetConnection = 8,
     /**
      * The response from the backend server is invalid.
      */
-    SCLFlicErrorCredentialsNotMatching,
+    SCLFlicErrorCredentialsNotMatching = 9,
     /**
-     * If you try to access a flic that is currently being used with another device or another app on the same iOS device.
+     * If you try to access a button that is currently being used with another device, or another app on the same iOS device.
      */
-    SCLFlicErrorButtonIsPrivate,
+    SCLFlicErrorButtonIsPrivate = 10,
     /**
      * A crypthographic error has occurred.
      */
-    SCLFlicErrorCryptographicFailure,
+    SCLFlicErrorCryptographicFailure = 11,
     /**
      * For some reason the button was disconnected before the verification sequense had time to complete.
      */
-    SCLFlicErrorButtonDisconnectedDuringVerification,
+    SCLFlicErrorButtonDisconnectedDuringVerification = 12,
     /**
      * The request did not contain enough data to be completed.
      */
-    SCLFlicErrorMissingData,
+    SCLFlicErrorMissingData = 13,
     /**
      * The signature over the data is not valid. The data might be corrupt.
      */
-    SCLFlicErrorInvalidSignature,
+    SCLFlicErrorInvalidSignature = 14,
     /**
-     * You are trying to grab a button that you have already grabbed before.
+     * You are trying to grab a Flic button that you have already grabbed before.
      */
-    SCLFlicErrorButtonAlreadyGrabbed,
+    SCLFlicErrorButtonAlreadyGrabbed = 15,
+    /**
+     * Bluetooth specific error
+     */
+    SCLFlicErrorBluetoothErrorUnknown = 100,
+    /**
+     * Bluetooth specific error
+     */
+    SCLFlicErrorBluetoothErrorInvalidParameters = 101,
+    /**
+     * Bluetooth specific error
+     */
+    SCLFlicErrorBluetoothErrorInvalidHandle = 102,
+    /**
+     * Bluetooth specific error
+     */
+    SCLFlicErrorBluetoothErrorNotConnected = 103,
+    /**
+     * Bluetooth specific error
+     */
+    SCLFlicErrorBluetoothErrorOutOfSpace = 104,
+    /**
+     * Bluetooth specific error
+     */
+    SCLFlicErrorBluetoothErrorOperationCancelled = 105,
+    /**
+     * Bluetooth specific error
+     */
+    SCLFlicErrorBluetoothErrorConnectionLost = 106,
+    /**
+     * Bluetooth specific error
+     */
+    SCLFlicErrorBluetoothErrorPeripheralDisconnected = 107,
+    /**
+     * Bluetooth specific error
+     */
+    SCLFlicErrorBluetoothErrorUUIDNotAllowed = 108,
+    /**
+     * Bluetooth specific error
+     */
+    SCLFlicErrorBluetoothErrorAlreadyAdvertising = 109,
+    /**
+     * Bluetooth specific error
+     */
+    SCLFlicErrorBluetoothErrorConnectionFailed = 110,
+    /**
+     * Bluetooth specific error
+     */
+    SCLFlicErrorBluetoothErrorConnectionLimitReached = 111,
 };
 
 @protocol SCLFlicButtonDelegate;
@@ -257,7 +305,6 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *
  */
 @property (atomic, readonly, strong, nonnull) NSString *name;
-
 
 /*!
  *  @property state

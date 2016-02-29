@@ -3,7 +3,7 @@
 //  fliclib
 //
 //  Created by Anton Meier on 2014-10-13.
-//  Copyright (c) 2014 Shortcut Labs. All rights reserved.
+//  Copyright (c) 2016 Shortcut Labs. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
