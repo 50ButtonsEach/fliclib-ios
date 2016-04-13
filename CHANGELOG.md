@@ -1,8 +1,31 @@
+#fliclib-ios 1.1.3
+
+This release has a lot of API breaking changes. We have collected a lot of feedback and decided to make some structural changes in order to make it easier to implement the fliclib framework. This framework will only work together with the Flic 2.0 and above app version and requires that the 'flic20' url scheme is added to the plist file instead of 'flic'.
+
+**Changes**
+
+* The manager is now a singleton. This makes sense since we only support one instance per application. It also helps it order to avoid the need to store and pass references across multiple views and classes.
+* The manager now has a defaultButtonDelegate that you can set if you know in advance where you want the events. This also removes the need for implementing the managerDidRestoreState since the delegates will also be set on restoration. 
+* Foreground/Background modes have been removed. Instead a lowLatency property can be used if you wish to reduce the latency, but both modes functions in the background as regardless. You opt-in for background execution on manager configuration.
+* Auto-connect is activated on all modes and can only be turned off by manually disconnecting the button. To turn it on again, simply call connect again.
+* handleOpenURL: added that can be called directly from App delegate. When new buttons are grabbed they will be sent through a flicManager:didGrabFlicButton:withError: callback.
+* All buttons are now automatically connected on a grab.
+* userAssignedName property added that contains the name set by the user in the Flic app.
+* color property that contains the color of the actual Flic button grabbed.
+* refreshPendingConnections has changed name to onLocationChange, to better display how it should be used.
+* The grab method has changed name to grabFlicFromFlicAppWithCallbackUrlScheme: and the scheme should only be the url scheme name that you have registered, meaning not a full URL.
+* Cleanup of error codes.
+
+**Issues Fixed**
+
+* Fixed issue that caused a manually disconnected button to connect after state restoration.
+* 
+
 #fliclib-ios 1.0.3
 
 **Changes**
 
-* Changes to BLE reconnectien
+* Changes to BLE reconnection
 * Internal rework
 * Updated error codes
 

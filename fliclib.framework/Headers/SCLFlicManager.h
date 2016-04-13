@@ -74,6 +74,17 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
 @property(weak, nonatomic, nullable) id<SCLFlicManagerDelegate> delegate;
 
 /*!
+ *  @property defaultButtonDelegate
+ *
+ *  @discussion     The default delegate that will be assigned to all buttons both when they are grabbed, but also during state
+ *                  restoration. This is not required since the button delegates can be set manually. If you decide to set them
+ *                  manually then you have to also remember to set them on on every application restoration when the manager
+ *                  sends the flicManagerDidRestoreState callback.
+ *
+ */
+@property(weak, nonatomic, nullable) id<SCLFlicButtonDelegate> defaultButtonDelegate;
+
+/*!
  *  @property bluetoothState
  *
  *  @discussion     The current bluetoothState of the flic manager. A bluetoothDidChangeState event will be generated
@@ -94,7 +105,15 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
 @property (readonly, getter=isEnabled) BOOL enabled;
 
 /*!
- *  @method initWithDelegate:appID:appSecret:backgroundExecution:andRestoreState:
+ *  @method sharedManager
+ *
+ *  @discussion     Use this to access the manager singleton. This will only work if a call to configureWithDelegate:appID:appSecret:backgroundExecution:
+ *                  has been made once this app session, otherwise nil will be returned.
+ */
++ (instancetype _Nullable) sharedManager;
+
+/*!
+ *  @method configureWithDelegate:defaultButtonDelegate:appID:appSecret:backgroundExecution:
  *
  *  @discussion     The initialization call to use when you want to create a manager. This will initiate a SCLFlicManager and do the proper
  *                  preparation needed in order to start the bluetooth communication with flic buttons. The BOOL <code>restore</code> included
@@ -109,16 +128,16 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *                  object. At that point it is recommended that you call <code>knownButtons:</code> in order to collect all the flic objects and
  *                  re-set their delegate.
  *
- *  @param delegate     The delegate that all callbacks will be sent to.
- *  @param appID        This is the App-ID string that the developer is required to have in order to use the fliclib framework.
- *  @param appSecret    This is the App-Secret string that the developer is required to have in order to use the fliclib framework.
- *  @param bExecution   Flag that specifies if want to configure the Flic manager to support background execution. If YES, then you also
- *                      have to check the "Uses Bluetooth LE accessories" option under your projects Background Modes settings.
- *  @param restore      Whether you want to create a brand new manager (and thus clearing any old manager) or restore the manager to a
- *                      previous state.
+ *  @param delegate         The delegate that all callbacks will be sent to.
+ *  @param buttonDelegate   This delegate will automatically be set to new buttons and old buttons on app restoration.
+ *  @param appID            This is the App-ID string that the developer is required to have in order to use the fliclib framework.
+ *  @param appSecret        This is the App-Secret string that the developer is required to have in order to use the fliclib framework.
+ *  @param bExecution       Flag that specifies if want to configure the Flic manager to support background execution. If YES, then you also
+ *                          have to check the "Uses Bluetooth LE accessories" option under your projects Background Modes settings.
  *
  */
-- (instancetype _Nullable) initWithDelegate:(id<SCLFlicManagerDelegate> _Nonnull) delegate appID: (NSString * _Nonnull) appID appSecret: (NSString * _Nonnull) appSecret backgroundExecution: (BOOL) bExecution andRestoreState:(BOOL) restore;
+
++ (instancetype _Nullable) configureWithDelegate:(id<SCLFlicManagerDelegate> _Nullable) delegate defaultButtonDelegate: (id<SCLFlicButtonDelegate> _Nullable) buttonDelegate appID: (NSString * _Nonnull) appID appSecret: (NSString * _Nonnull) appSecret backgroundExecution: (BOOL) bExecution;
 
 /*!
  *  @method knownButtons:
@@ -162,37 +181,39 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  */
 - (void) enable;
 
-
 /*!
- *  @method requestButtonFromFlicAppWithCallback:
+ *  @method grabFlicFromFlicAppWithCallbackUrlScheme:
  *
  *  @discussion         This will launch the Flic app and allow the user to select the Flic button to assign to this App.
  *
- *  @param callback     This is the callback URL that you want the Flic app to return the data to.
+ *  @param scheme       This is the callback URL that you have registered in your Plist file and want the Flic app to return
+ *                      the grabbed Flic to. Remember that this is only the scheme name that you have registered, and NOT a 
+ *                      full URL.
  *
  */
-- (void) requestButtonFromFlicAppWithCallback: (NSString * _Nonnull) callback;
+- (void) grabFlicFromFlicAppWithCallbackUrlScheme: (NSString * _Nonnull) scheme;
 
 /*!
- *  @method generateButtonFromURL:
+ *  @method handleOpenURL:
  *
- *  @discussion     Use this method in order to generate a Flic button from a URL that was recieved from the flic App callback.
+ *  @discussion     Call this method with the URL returned from the Flic app. A callback will be sent if a button can be created.
  *
- *  @param url      This is the full url that was returned from the Flic app. 
+ *  @param url      This is the full url that was returned from the Flic app.
+ *
+ *  @return         If this url can be handled by the flic manager or not.
  *
  */
-- (SCLFlicButton * _Nullable) generateButtonFromURL: (NSURL * _Nonnull) url error: (NSError * _Nullable * _Nullable) error;
+- (BOOL) handleOpenURL: (NSURL * _Nonnull) url;
 
 
 /*!
- *  @method refreshPendingConnections:
+ *  @method onLocationChange
  *
- *  @discussion     This method will go through all pending connections and refresh them. This is needed since we unfortunately can not rely on Apple
- *                  to take care of that. This method should be called at regular intervals, such the once provided by significant location changes.
- *                  Please note that this is ONLY needed if you are using SCLFlicModeBackground!
+ *  @discussion     Call this method on significant location changes. This will go through all pending connections and make sure that they are in the
+ *                  proper state. This is needed since we can not rely on Apple to take care of that to 100%.
  *
  */
-- (void) refreshPendingConnections;
+- (void) onLocationChange;
 
 @end
 
@@ -207,6 +228,18 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
 @protocol SCLFlicManagerDelegate <NSObject>
 
 @required
+
+/*!
+ *  @method flicManager:didGrabFlicButton:withError:
+ *
+ *  @param manager      The manager providing this information.
+ *  @param button       The SCLFlicButton object that was grabbed from the Flic app
+ *  @param error        In case something went wrong while grabbing the Flic this parameter will explain the error.
+ *
+ *  @discussion         This delegate method is called every time the a new Flic button is grabbed from the Flic App.
+ *
+ */
+- (void) flicManager:(SCLFlicManager * _Nonnull) manager didGrabFlicButton:(SCLFlicButton * _Nullable) button withError: (NSError * _Nullable) error;
 
 @optional
 

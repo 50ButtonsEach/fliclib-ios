@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
+@class UIColor;
 
 /*!
  *  @enum SCLFlicButtonConnectionState
@@ -34,30 +35,6 @@ typedef NS_ENUM(NSInteger, SCLFlicButtonConnectionState) {
      * The flic is currently disconnecting.
      */
     SCLFlicButtonConnectionStateDisconnecting,
-};
-
-/*!
- *  @enum SCLFlicButtonMode
- *
- *  @discussion Represents the different modes that a flic can be configured to operate in. It is very important that you choose a mode
- *              that fits your application the best. Always try to choose the mode that consumes the least amount of battery that works
- *              with your application.
- *
- */
-typedef NS_ENUM(NSInteger, SCLFlicButtonMode) {
-    /**
-     * This mode will configure the Flic to run with lower latency that might be needed if you are planning on using Flic in a foreground
-     * application. If the application leaves tha foreground then the latency will again be set higher in order to preserve battery.
-     * In this mode you as a developer has the responsibillity to connect the Flic each time you want to use it, unlike in
-     * <i>SCLFlicButtonModeBackground</i>where the Lib will make sure to keep it connected.
-     */
-    SCLFlicButtonModeForeground = 0,
-    /**
-     * This mode is prefered when you are developing an application that depends on Flic working in the background. The latency will be higher
-     * than in <i>SCLFlicButtonModeForeground</i> in order to preserve battery. The Lib will make sure that the Flic is connected whenever possible.
-     * Please also read more about the <code>refreshPendingConnections:</code> method on the manager to achieve the best possible connectivity.
-     */
-    SCLFlicButtonModeBackground = 1,
 };
 
 /*!
@@ -163,30 +140,6 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
      */
     SCLFlicErrorCouldNotUpdateRSSI = 3,
     /**
-     * The internal database that is used in order to keep track of the buttons is not available or can not be accessed.
-     */
-    SCLFlicErrorDatabaseError = 4,
-    /**
-     * If the button sends unknown data to the iOS device that does not comply with our communication protocol specification.
-     */
-    SCLFlicErrorUnknownDataReceived = 5,
-    /**
-     * If for some reason the button does not responde in time during the verification process.
-     */
-    SCLFlicErrorVerificationTimeOut = 6,
-    /**
-     * The backend that is used for the initial verification sequence can not be reached.
-     */
-    SCLFlicErrorBackendUnreachable = 7,
-    /**
-     * The iOS device does not have an internet connection that is required in order to complete the task.
-     */
-    SCLFlicErrorNoInternetConnection = 8,
-    /**
-     * The response from the backend server is invalid.
-     */
-    SCLFlicErrorCredentialsNotMatching = 9,
-    /**
      * If you try to access a button that is currently being used with another device, or another app on the same iOS device.
      */
     SCLFlicErrorButtonIsPrivate = 10,
@@ -194,10 +147,6 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
      * A crypthographic error has occurred.
      */
     SCLFlicErrorCryptographicFailure = 11,
-    /**
-     * For some reason the button was disconnected before the verification sequense had time to complete.
-     */
-    SCLFlicErrorButtonDisconnectedDuringVerification = 12,
     /**
      * The request did not contain enough data to be completed.
      */
@@ -258,6 +207,10 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
      * Bluetooth specific error
      */
     SCLFlicErrorBluetoothErrorConnectionLimitReached = 111,
+    /**
+     * Connection was refused by Flic
+     */
+    SCLFlicErrorFlicRefusedConnection = 200,
 };
 
 @protocol SCLFlicButtonDelegate;
@@ -307,6 +260,23 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
 @property (atomic, readonly, strong, nonnull) NSString *name;
 
 /*!
+ *  @property color
+ *
+ *  @discussion The actual color of the grabbed Flic button. If for some reason the real color is not available, such as if the button
+ *              was already grabbed with an earlier version of fliclib, then the color will default to white.
+ *
+ */
+@property (atomic, readonly, strong, nonnull) UIColor *color;
+
+/*!
+ *  @property userAssignedName
+ *
+ *  @discussion This is the user assigned name of the Flic button that is assigned and displayed in the Flic App.
+ *
+ */
+@property (atomic, readonly, strong, nonnull) NSString *userAssignedName;
+
+/*!
  *  @property state
  *
  *  @discussion The current state of the flic.
@@ -315,12 +285,15 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
 @property (atomic, readonly) SCLFlicButtonConnectionState connectionState;
 
 /*!
- *  @property mode
+ *  @property lowLatency
  *
- *  @discussion The current mode of the flic.
+ *  @discussion The latency setting for this button. If you set this to YES then you will get lower latency on the click events when your
+ *              is in the foreground. As soon as the app leaves the foreground it will be set back to the regular latency setting.
+ *              Please only use this if you have a very good reason for it, such as if you are designing a foreground game that requires it.
+ *              Battery consumption will increase with this activated.
  *
  */
-@property (nonatomic, readwrite) SCLFlicButtonMode mode;
+@property (nonatomic, readwrite) BOOL lowLatency;
 
 /*!
  *  @property triggerBehavior
@@ -380,19 +353,6 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @param count    Decides how many times the LED will indicate (fade)
  */
 - (void) indicateLED: (SCLFlicButtonLEDIndicateCount) count;
-
-/*!
- *  @method setMode:
- *
- *  @discussion         This method is the method to call when you wish to switch between the different available modes for the flic.
- *                      If the flic is not available, meaning that it is not connected to the iOS device, due to either being manually disconnected
- *                      or being out of proximity, then the mode will not change instantly. The mode will instead change once the flic becomes
- *                      available the next time and only then will the mode property be updated accordingly.
- *
- *  @param mode         The mode that you wish to switch to.
- *
- */
-- (void) setMode:(SCLFlicButtonMode)mode;
 
 /*!
  *  @method readRSSI
@@ -537,8 +497,8 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *
  *  @discussion         The requested connection failed. Please note that depending on at what point in the connection process the connection
  *                      failed you might also receive a regular flicButtonDidDisconnect: as well. If the connection fails and this callback is
- *                      made then the flic will always cancel the pending connection, regardless of what mode the flic happens to be in.
- *                      This means that if you get a <code>flicButton:didFailToConnectWithError:</code> event when the flic is in Background mode then you
+ *                      made then the flic will always cancel the pending connection, regardless of what state the flic happens to be in.
+ *                      This means that if you get a <code>flicButton:didFailToConnectWithError:</code> then you
  *                      need to call the <code>connect:</code> yourself to activate the pending connection once again.
  *
  */
