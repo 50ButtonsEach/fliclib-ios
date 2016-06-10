@@ -1,3 +1,12 @@
+#fliclib-ios 1.1.5
+
+Bug fix release.
+
+**Issues Fixed**
+
+* Added an event ack for every button events unique per app. In certain conditions a race condition could occur where one app could fetch all the queued events from the button before the other app connected. Now both the third party app and the Flic app will get all the events even if one of the apps had the button disconnected while the event happened.
+* Corrected HTML tags is header file.
+
 #fliclib-ios 1.1.3
 
 This release has a lot of API breaking changes. We have collected a lot of feedback and decided to make some structural changes in order to make it easier to implement the fliclib framework. This framework will only work together with the Flic 2.0 and above app version and requires that the 'flic20' url scheme is added to the plist file instead of 'flic'.
@@ -19,7 +28,6 @@ This release has a lot of API breaking changes. We have collected a lot of feedb
 **Issues Fixed**
 
 * Fixed issue that caused a manually disconnected button to connect after state restoration.
-* 
 
 #fliclib-ios 1.0.3
 

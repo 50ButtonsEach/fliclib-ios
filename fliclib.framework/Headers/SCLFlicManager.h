@@ -99,7 +99,7 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *  @property enabled
  *
  *  @discussion     This is a flag that lets you know if the manager is enabled for Bluetooth LE communication. This can be toggled on/off using the
- *                  <code>enable</code> and <code>disable</methods>. When This property is set to <code>NO</code>, then no Bluetooth LE communication
+ *                  <code>enable</code> and <code>disable</code>. When This property is set to <code>NO</code>, then no Bluetooth LE communication
  *                  will be allowed. This means that no communication with a flic can be made.
  */
 @property (readonly, getter=isEnabled) BOOL enabled;
@@ -166,7 +166,7 @@ typedef NS_ENUM(NSInteger, SCLFlicManagerBluetoothState) {
  *  @method disable
  *
  *  @discussion     This will disable all bluetooth communication and disconnect all currently connected buttons and pending connections.
- *                  You will not be able to do any communication with a flic until you call <code>enable</enable>.
+ *                  You will not be able to do any communication with a flic until you call <code>enable</code>.
  *
  */
 - (void) disable;

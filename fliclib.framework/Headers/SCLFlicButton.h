@@ -288,7 +288,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @property lowLatency
  *
  *  @discussion The latency setting for this button. If you set this to YES then you will get lower latency on the click events when your
- *              is in the foreground. As soon as the app leaves the foreground it will be set back to the regular latency setting.
+ *              app is in the foreground. As soon as the app leaves the foreground it will be set back to the regular latency setting.
  *              Please only use this if you have a very good reason for it, such as if you are designing a foreground game that requires it.
  *              Battery consumption will increase with this activated.
  *

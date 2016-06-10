@@ -2,8 +2,8 @@
 //  fliclib.h
 //  fliclib
 //
-//  Created by Anton Meier on 2014-10-13.
-//  Copyright (c) 2014 Shortcut Labs. All rights reserved.
+//  Created by Anton Meier on 2016-04-20.
+//  Copyright (c) 2016 Shortcut Labs. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
