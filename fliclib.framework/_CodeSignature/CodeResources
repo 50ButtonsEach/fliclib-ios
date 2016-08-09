@@ -18,7 +18,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		XPiCkhEv7C8gOqxJFhgdbfr/Ht8=
+		o46ipQgBHiEfMEVbTorvh5K+fmM=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -28,21 +28,49 @@
 	<key>files2</key>
 	<dict>
 		<key>Headers/SCLFlicButton.h</key>
-		<data>
-		rJrmUbTsu+0a+Uaw14FTNyvExl8=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			rJrmUbTsu+0a+Uaw14FTNyvExl8=
+			</data>
+			<key>hash2</key>
+			<data>
+			vqafCngg7I2EREEcOnzsIkgYuvzF/uOP4Wb52+O++yo=
+			</data>
+		</dict>
 		<key>Headers/SCLFlicManager.h</key>
-		<data>
-		rwpYvLtyGbxrExGHypiY5xKcHXg=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			rwpYvLtyGbxrExGHypiY5xKcHXg=
+			</data>
+			<key>hash2</key>
+			<data>
+			pHxJsWwrYyR6gsYzUZDKNkStk5sYTP0BRvCIraNK3B0=
+			</data>
+		</dict>
 		<key>Headers/fliclib.h</key>
-		<data>
-		kDHRwtezI57a4MdVG1UGtRKjueo=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			kDHRwtezI57a4MdVG1UGtRKjueo=
+			</data>
+			<key>hash2</key>
+			<data>
+			virUZ7C1Pd1Ft7mRpEPXsFzMVCTDg73o8ZBEKZ6vcVs=
+			</data>
+		</dict>
 		<key>Modules/module.modulemap</key>
-		<data>
-		47NE4nNZy8vvsG57yHs3I5dVrAg=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			47NE4nNZy8vvsG57yHs3I5dVrAg=
+			</data>
+			<key>hash2</key>
+			<data>
+			9kSaz25VUNf/BjySgZjJaSeJx0nO2aKsxjmxjL00Ju8=
+			</data>
+		</dict>
 	</dict>
 	<key>rules</key>
 	<dict>

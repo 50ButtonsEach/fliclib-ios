@@ -1,3 +1,9 @@
+#fliclib-ios 1.1.7
+
+**Changes**
+
+* iOS 10 compatibility added. This version is a mandatory update if you need iOS 10 support. Apple has unfortunately made API breaking changes to the Bluetooth framework which is why this update is needed. Any apps using older versions of the fliclib framework will stop working properly if a user updates to iOS 10 unless this has been updated.
+
 #fliclib-ios 1.1.5
 
 Bug fix release.
