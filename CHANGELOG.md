@@ -1,3 +1,10 @@
+#fliclib-ios 1.1.11
+
+**Changes**
+
+* A few iOS 10.2 bluetooth patches
+* Added SCLFlicButtonTriggerBehaviorClick which can be used if you only need click and want the lowest possible latency on that event.
+
 #fliclib-ios 1.1.7
 
 **Changes**

@@ -114,6 +114,11 @@ typedef NS_ENUM(NSInteger, SCLFlicButtonTriggerBehavior) {
      * Four fast consecutive clicks means two double clicks.
      */
     SCLFlicButtonTriggerBehaviorClickAndDoubleClickAndHold,
+    /**
+     * This mode will only send click and the event will be sent directly on buttonDown. This will be the same as listening for
+     * buttonDown. This click mode can be used if you wish to have the lowes possible latency on the click event.
+     */
+    SCLFlicButtonTriggerBehaviorClick,
 };
 
 /*!
@@ -348,7 +353,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *  @method indicateLED:
  *
  *  @discussion     Use this method when you want to indicate something to the user by fading the LED. Be mindful with battery usage.
- *                  This will only work if the Flic is connected.
+ *                  This will only work if the Flic is connected. To prevent unnecessary battery wase the maximum fade count is five.
  *
  *  @param count    Decides how many times the LED will indicate (fade)
  */
