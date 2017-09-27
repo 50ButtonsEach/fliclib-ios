@@ -6,19 +6,19 @@
 	<dict>
 		<key>Headers/SCLFlicButton.h</key>
 		<data>
-		z4Gj6annFhh0gI3l+PyMVq/jn9A=
+		MJifXy4bmHNsdzn54jg+Si3OQA0=
 		</data>
 		<key>Headers/SCLFlicManager.h</key>
 		<data>
-		rwpYvLtyGbxrExGHypiY5xKcHXg=
+		z/RIBVDzML9E0a7/VZKgtQPnumk=
 		</data>
 		<key>Headers/fliclib.h</key>
 		<data>
-		kDHRwtezI57a4MdVG1UGtRKjueo=
+		UdkFNOalpjaB+cgi2Mt09qBc5sI=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		qzDegsR3YOobne1FivqRyNnlFtI=
+		QZHUFmdTZuWzXI3/ILSW5qFq5lQ=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -31,33 +31,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			z4Gj6annFhh0gI3l+PyMVq/jn9A=
+			MJifXy4bmHNsdzn54jg+Si3OQA0=
 			</data>
 			<key>hash2</key>
 			<data>
-			/hQEj334lhnWZAydEvaM5tCA3pxj8OgWiB740VJ4Fvw=
+			3nuSnuZBwL1D11v/XCNkT8TgUCIoUHEJb1H21MDnWZY=
 			</data>
 		</dict>
 		<key>Headers/SCLFlicManager.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			rwpYvLtyGbxrExGHypiY5xKcHXg=
+			z/RIBVDzML9E0a7/VZKgtQPnumk=
 			</data>
 			<key>hash2</key>
 			<data>
-			pHxJsWwrYyR6gsYzUZDKNkStk5sYTP0BRvCIraNK3B0=
+			hxYxal5YlQqHVs5jhAEJMuQ7kZ9cAjN5eG0TW5Qb6EY=
 			</data>
 		</dict>
 		<key>Headers/fliclib.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			kDHRwtezI57a4MdVG1UGtRKjueo=
+			UdkFNOalpjaB+cgi2Mt09qBc5sI=
 			</data>
 			<key>hash2</key>
 			<data>
-			virUZ7C1Pd1Ft7mRpEPXsFzMVCTDg73o8ZBEKZ6vcVs=
+			JkNpyZ2+8yETwAGnBheFRYFVjKC0QBi+y8ZAXiBiAGk=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

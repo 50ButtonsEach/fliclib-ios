@@ -3,10 +3,10 @@
 //  fliclib
 //
 //  Created by Anton Meier on 2016-04-20.
-//  Copyright (c) 2016 Shortcut Labs. All rights reserved.
+//  Copyright (c) 2017 Shortcut Labs. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 #import <fliclib/SCLFlicManager.h>
 #import <fliclib/SCLFlicButton.h>

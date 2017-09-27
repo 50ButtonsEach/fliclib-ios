@@ -1,3 +1,10 @@
+#fliclib-ios 1.2.0
+
+**Changes**
+
+* Bluetooth connectivity fixes for iOS11
+* fliclib data storage moved from NSDocumentDirectory to NSLibraryDirectory. Any existing old files will be moved over to the new location.
+
 #fliclib-ios 1.1.11
 
 **Changes**
