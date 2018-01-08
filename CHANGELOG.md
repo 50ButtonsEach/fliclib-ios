@@ -1,31 +1,31 @@
-#fliclib-ios 1.2.2
+# fliclib-ios 1.2.2
 
 **Changes**
 
 * Corrected a UIApplication method call that accidentally ran on a background queue.
 * State restoration adjusted slightly to better work with iOS11.1/2.
 
-#fliclib-ios 1.2.0
+# fliclib-ios 1.2.0
 
 **Changes**
 
 * Bluetooth connectivity fixes for iOS11
 * fliclib data storage moved from NSDocumentDirectory to NSLibraryDirectory. Any existing old files will be moved over to the new location.
 
-#fliclib-ios 1.1.11
+# fliclib-ios 1.1.11
 
 **Changes**
 
 * A few iOS 10.2 bluetooth patches
 * Added SCLFlicButtonTriggerBehaviorClick which can be used if you only need click and want the lowest possible latency on that event.
 
-#fliclib-ios 1.1.7
+# fliclib-ios 1.1.7
 
 **Changes**
 
 * iOS 10 compatibility added. This version is a mandatory update if you need iOS 10 support. Apple has unfortunately made API breaking changes to the Bluetooth framework which is why this update is needed. Any apps using older versions of the fliclib framework will stop working properly if a user updates to iOS 10 unless this has been updated.
 
-#fliclib-ios 1.1.5
+# fliclib-ios 1.1.5
 
 Bug fix release.
 
@@ -34,7 +34,7 @@ Bug fix release.
 * Added an event ack for every button events unique per app. In certain conditions a race condition could occur where one app could fetch all the queued events from the button before the other app connected. Now both the third party app and the Flic app will get all the events even if one of the apps had the button disconnected while the event happened.
 * Corrected HTML tags is header file.
 
-#fliclib-ios 1.1.3
+# fliclib-ios 1.1.3
 
 This release has a lot of API breaking changes. We have collected a lot of feedback and decided to make some structural changes in order to make it easier to implement the fliclib framework. This framework will only work together with the Flic 2.0 and above app version and requires that the 'flic20' url scheme is added to the plist file instead of 'flic'.
 
@@ -56,7 +56,7 @@ This release has a lot of API breaking changes. We have collected a lot of feedb
 
 * Fixed issue that caused a manually disconnected button to connect after state restoration.
 
-#fliclib-ios 1.0.3
+# fliclib-ios 1.0.3
 
 **Changes**
 
@@ -69,7 +69,7 @@ This release has a lot of API breaking changes. We have collected a lot of feedb
 * Fixed issue that caused connection to fail if you set mode directly before initiating a connection.
 * Fixed issue in outgoing packet signing that caused an invalid signature on packets send if the app was crashed and relaunched in the background during an active Flic connection.
 
-#fliclib-ios 0.9.5
+# fliclib-ios 0.9.5
 
 **Changes**
 
@@ -80,7 +80,7 @@ This release has a lot of API breaking changes. We have collected a lot of feedb
 * Bitcode support added.
 * refreshPendingConnections: method added to SCLFlicManager. This method is important when using the background mode for Flic in order to keep the pending connections in a proper state. Please see documentation for more information about that.
 
-#fliclib-ios 0.8.2
+# fliclib-ios 0.8.2
 
 **Changes**
 
@@ -89,7 +89,7 @@ This release has a lot of API breaking changes. We have collected a lot of feedb
 * Added isReady property.
 
 
-#fliclib-ios 0.7.1
+# fliclib-ios 0.7.1
 
 **Changes**
 
@@ -97,7 +97,7 @@ This release has a lot of API breaking changes. We have collected a lot of feedb
 * Passive mode removed, use ActiveKeepAlive for those use-cases instead.
 * Updated Documentation.
 
-#fliclib-ios 0.6.7
+# fliclib-ios 0.6.7
 
 **Changes**
 
