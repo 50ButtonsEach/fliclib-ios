@@ -1,3 +1,10 @@
+#fliclib-ios 1.2.2
+
+**Changes**
+
+* Corrected a UIApplication method call that accidentally ran on a background queue.
+* State restoration adjusted slightly to better work with iOS11.1/2.
+
 #fliclib-ios 1.2.0
 
 **Changes**

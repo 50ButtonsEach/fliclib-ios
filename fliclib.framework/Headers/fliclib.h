@@ -18,5 +18,3 @@ FOUNDATION_EXPORT double fliclibVersionNumber;
 FOUNDATION_EXPORT const unsigned char fliclibVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <fliclib/PublicHeader.h>
-
-
