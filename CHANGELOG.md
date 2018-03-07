@@ -1,3 +1,9 @@
+# fliclib-ios 1.2.3
+
+**Changes**
+
+* Fixed a bug that caused click events to be slower than they should have been, particularly when lowLatency mode was used.
+
 # fliclib-ios 1.2.2
 
 **Changes**
