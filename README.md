@@ -16,3 +16,7 @@ To use this wrapper follow these steps:
 1. Include the files inside the `simulator-wrapper` folder to your project.
 2. On all the places in your code where you need to import fliclib you should import the wrapper instead. In other words, replace `#import <fliclib/fliclib.h>` with `#import "fliclibWrapper.h"`. Of course, the file path will depend on how you have configured your project. For example, if you have the *fliclib-ios* repository as a git submodule in your project root then it might look like this `#import "../fliclib-ios/simulator-wrapper/fliclibWrapper.h"`.
 3. Make sure that both `SCLFlicManagerSimulator.m` and `SCLFlicButtonSimulator.m` are added to *Compile Sources* in your project *Build Phases*.
+
+**Licence**
+
+Any documentation or source code contained in this repository is released under [CC0](LICENCE%20(for%20the%20documentation%20and%20source%20code).txt). The fliclib binary is released under a [separate license](LICENCE%20(for%20the%20fliclib%20binary).txt) which allows you to use it almost without restrictions.
