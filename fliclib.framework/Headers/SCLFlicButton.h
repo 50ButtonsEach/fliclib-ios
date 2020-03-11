@@ -3,7 +3,7 @@
 //  @framework fliclib
 //
 //  Created by Anton Meier on 2014-06-18.
-//  Copyright (c) 2017 Shortcut Labs. All rights reserved.
+//  Copyright (c) 2020 Shortcut Labs. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -133,9 +133,9 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
      */
     SCLFlicErrorUnknown = 0,
     /**
-     * General error code that can be sent to let you know that a started task did not complete.
+     * The framework was unable to forget the button.
      */
-    SCLFlicErrorCouldNotCompleteTask = 1,
+    SCLFlicErrorCouldNotForgetButton = 1,
     /**
      * If a connection to a button failed for unknown reasons. This could for example be if it is brought out of range during a connection sequense.
      */
@@ -145,9 +145,9 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
      */
     SCLFlicErrorCouldNotUpdateRSSI = 3,
     /**
-     * If you try to access a button that is currently being used with another device, or another app on the same iOS device.
+     * The data sent by the Flic/PbF button does not confirn with the protocol specificatin.
      */
-    SCLFlicErrorButtonIsPrivate = 10,
+    SCLFlicErrorUnknownDataReceived = 5,
     /**
      * A crypthographic error has occurred.
      */
@@ -164,6 +164,18 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
      * You are trying to grab a Flic button that you have already grabbed before.
      */
     SCLFlicErrorButtonAlreadyGrabbed = 15,
+    /**
+     * The button's verification message was not valid.
+     */
+    SCLFlicErrorIllegalVerificationResponse = 31,
+    /**
+     * The iOS device was unable to performe the bluetooth specific service discovery.
+     */
+    SCLFlicErrorCouldNotDiscoverServices = 33,
+    /**
+     * The button was unable to create a stable connection even after a number of re-tries.
+     */
+    SCLFlicErrorConnectionRetryLimitReached = 34,
     /**
      * Bluetooth specific error
      */
@@ -298,7 +310,7 @@ typedef NS_ENUM(NSInteger, SCLFlicError) {
  *              Battery consumption will increase with this activated.
  *
  */
-@property (nonatomic, readwrite) BOOL lowLatency;
+@property(nonatomic, readwrite) BOOL lowLatency;
 
 /*!
  *  @property triggerBehavior
