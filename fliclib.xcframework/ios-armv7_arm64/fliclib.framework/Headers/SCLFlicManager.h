@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
-#import "SCLFlicButton.h"
+#import <fliclib/SCLFlicButton.h>
 
 /*!
  *  @enum SCLFlicManagerBluetoothState
