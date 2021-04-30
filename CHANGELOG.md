@@ -4,9 +4,19 @@
 
 This file documents the changes between different versions of the `fliclib.framework` for the original Flic.
 
+## fliclib-ios 1.5.0
+
+### Changes
+
+* The XCFramework bundle now adds an empty Mac Catalyst implementation for both Intel and Apple Silicon. This means that while Flic functionality is still not supported on Mac, you will now at least be able to compile and run your project with Mac Catalyst.
+
+* The build for iOS Simulator now includes slices for arm64 (Apple Silicon). Slices for i386 (32 bit simulator) have been removed.
+
+* Frameworks up to date with with iphoneos14.5 sdk.
+
 ## fliclib-ios 1.4.0
 
-### Significant Changes
+### Changes
 
 * The framework is now distributed using the new XCFramework packaging format. This means that instead of a single `fliclib.framework` file, you will need to use a `fliclib.xcframework` bundle. This bundle is essentially a folder containing framework builds for all supported architectures. The main benefit of this is that the framework will from now on run in the iOS Simulator, by default, with no configuration needed.
 
@@ -15,8 +25,6 @@ This file documents the changes between different versions of the `fliclib.frame
 	Xcode 11 is required in order to use XCFramework bundles.
 
 ## fliclib-ios 1.3.3
-
-### Changes
 
 ### Significant Changes
 

@@ -1,0 +1,6 @@
+framework module fliclib {
+  umbrella header "fliclib.h"
+
+  export *
+  module * { export * }
+}
